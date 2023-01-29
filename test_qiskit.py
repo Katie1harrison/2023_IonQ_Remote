@@ -118,7 +118,181 @@ def test():
 
 
 ############################
-#      YOUR CODE HERE      #
+#      # Num_qubits = 16
+from sklearn.decomposition import PCA
+fashion_reshaped = np.array(images).reshape(2000,784)
+pca_model = PCA(n_components=(Num_qubits))
+pca_model.fit(fashion_reshaped)
+fashion_pca_model_reduced = pca_model.fit_transform(fashion_reshaped)
+plt.imshow(fashion_pca_model_reduced[1].reshape(4,4))
+
+
+
+qc = QuantumCircuit(5)
+thetas = fashion_pca_model_reduced[1]
+
+qc.h(0)
+qc.h(1)
+qc.h(2)
+qc.h(3)
+qc.h(4)
+
+qc.barrier()
+#Pixel 1
+
+qc.cry(2*thetas[0],1,2)
+
+# qc.cry(theta,0,2)
+# qc.cx(0,1)
+# qc.cry(-theta,1,2)
+# qc.cx(0,1)
+# qc.cry(theta,1,2)
+
+
+qc.append(Placeholder(5, '1st'), [0, 1,2,3,4])
+
+
+qc.barrier()
+#Pixel 2
+
+
+# qc.x(1)
+# qc.cry(theta,0,2)
+# qc.cx(0,1)
+# qc.cry(-theta,1,2)
+# qc.cx(0,1)
+# qc.cry(theta,1,2)
+qc.append(Placeholder(5, '2nd'), [0, 1,2,3,4])
+qc.cry(2*thetas[1],1,2)
+qc.x(3)
+
+qc.barrier()
+#pixel 3
+
+
+# qc.x(1)
+# qc.x(0)
+# qc.cry(theta,0,2)
+# qc.cx(0,1)
+# qc.cry(-theta,1,2)
+# qc.cx(0,1)
+# qc.cry(theta,1,2)
+
+qc.append(Placeholder(5, '3rd'), [0, 1,2,3,4])
+qc.cry(2*thetas[2],1,2)
+qc.x(2)
+qc.x(3)
+qc.barrier()
+
+#pixel 4
+
+qc.append(Placeholder(5, '4rd'), [0, 1,2,3,4])
+qc.cry(2*thetas[3],1,2)
+qc.x(3)
+qc.barrier()
+
+
+#pixel 5
+qc.append(Placeholder(5, '5th'), [0, 1,2,3,4])
+qc.cry(2*thetas[4],1,2)
+qc.x(1)
+qc.x(2)
+qc.x(3)
+qc.barrier()
+
+#pixel 6
+
+qc.append(Placeholder(5, '6th'), [0, 1,2,3,4])
+qc.cry(2*thetas[5],1,2)
+qc.x(3)
+qc.barrier()
+
+#pixel 7
+
+qc.append(Placeholder(5, '7th'), [0, 1,2,3,4])
+qc.cry(2*thetas[6],1,2)
+qc.x(3)
+qc.x(2)
+qc.barrier()
+
+#pixel 8
+
+qc.append(Placeholder(5, '8th'), [0, 1,2,3,4])
+qc.cry(2*thetas[7],1,2)
+qc.x(3)
+qc.barrier()
+
+#pixel 9
+qc.append(Placeholder(5, '9th'), [0, 1,2,3,4])
+qc.cry(2*thetas[8],1,2)
+qc.x(1)
+qc.x(2)
+qc.x(3)
+qc.x(4)
+qc.barrier()
+#pixel 10
+
+qc.append(Placeholder(5, '10th'), [0, 1,2,3,4])
+qc.cry(2*thetas[9],1,2)
+qc.x(3)
+qc.barrier()
+
+
+
+#pixel 11
+
+
+
+qc.append(Placeholder(5, '11th'), [0, 1,2,3,4])
+qc.cry(2*thetas[10],1,2)
+qc.x(2)
+qc.x(3)
+qc.barrier()
+
+#pixel 12
+
+qc.append(Placeholder(5, '12th'), [0, 1,2,3,4])
+qc.cry(2*thetas[11],1,2)
+qc.x(3)
+qc.barrier()
+
+
+#pixel 13
+qc.append(Placeholder(5, '13th'), [0, 1,2,3,4])
+qc.cry(2*thetas[12],1,2)
+qc.x(1)
+qc.x(2)
+qc.x(3)
+qc.barrier()
+
+#pixel 14
+
+qc.append(Placeholder(5, '14th'), [0, 1,2,3,4])
+qc.cry(2*thetas[13],1,2)
+qc.x(3)
+qc.barrier()
+
+
+
+#pixel 15
+
+
+qc.append(Placeholder(5, '15th'), [0, 1,2,3,4])
+qc.cry(2*thetas[14],1,2)
+qc.x(2)
+qc.x(3)
+qc.barrier()
+
+#pixel 16
+
+qc.append(Placeholder(5, '16th'), [0, 1,2,3,4])
+qc.cry(2*thetas[15],1,2)
+qc.x(3)
+qc.barrier()
+
+qc.measure_all()
+
+qc.draw("mpl") 
 ############################
 def encode(image):
     q = qiskit.QuantumRegister(3)
