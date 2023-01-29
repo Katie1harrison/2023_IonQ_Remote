@@ -1,3 +1,7 @@
+teamname="QuHacketeers"
+task="part 1"
+
+
 import qiskit
 from qiskit import quantum_info
 from qiskit.execute_function import execute
